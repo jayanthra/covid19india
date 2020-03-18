@@ -3,6 +3,7 @@ Active corona cases in India
 
 ### View
 
+DEMO : https://jayanthra-covid19india.glitch.me/
 ![alt text](https://raw.githubusercontent.com/jayanthra/covid19india/master/screenshot.png)
 
 ### Tech
