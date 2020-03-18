@@ -1,5 +1,9 @@
 # Covid19india
-Corona cases in India 
+Active corona cases in India
+
+### View
+
+![alt text](https://raw.githubusercontent.com/jayanthra/covid19india/master/screenshot.png)
 
 ### Tech
 
@@ -10,7 +14,6 @@ Corona cases in India
 * [Vue-Leaflet] - Maps
 
 Data sourced from https://www.mohfw.gov.in/
-
 
 [//]: # ()
 
