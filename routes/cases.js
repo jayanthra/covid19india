@@ -20,10 +20,11 @@ router.route('/all').get((req, res) => {
       const recovered = $(tds[4]).text();
       const dead = $(tds[5]).text();
       const total = parseInt(confirmed_indian) + parseInt(confirmed_foreign)
-      const location = statelocation[state]
+      const location = statelocation[state] ? statelocation[state] : {lat: '',long:''}
       const tableRow = {state,confirmed_indian, confirmed_foreign, total,recovered, dead,location}
       cases.push(tableRow)
     });
+    cases.pop()
     res.send(cases)
   })
 });
