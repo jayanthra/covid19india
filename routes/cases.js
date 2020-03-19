@@ -3,16 +3,26 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 const url = 'https://www.mohfw.gov.in/';
 const statelocation = require('./locations');
+const BASE_URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
+const csv = require('csvtojson')
 
 
 let cases = []
 
-router.route('/all').get((req, res) => {
+const loadRequest = {
+  loadData() {
+   return csv().fromStream(rp(BASE_URL))
+         .subscribe((json)=>{
+         return json
+   });
+ }
+}
+
+router.route('/india').get((req, res) => {
   cases = []
   rp(url).then(function(result) {
     const $ = cheerio.load(result);
-    $('body > div:nth-child(3) > div > div > div > ol > strong > strong > strong > div > table > tbody > tr').each((index, element) => {
-      if(index===16) return
+    $('body table > tbody > tr').each((index, element) => {
       const tds = $(element).find("td");
       const state = $(tds[1]).text();
       const confirmed_indian = $(tds[2]).text();
@@ -26,6 +36,35 @@ router.route('/all').get((req, res) => {
     });
     cases.pop()
     res.send(cases)
+  })
+});
+
+router.route('/world').get((req, res) => {
+  loadRequest.loadData().then(resp => {
+    locations = []
+    resp.forEach(item => {
+      let objCopy = Object.assign({}, item);
+      delete objCopy['Province/State']
+      delete objCopy['Country/Region']
+      delete objCopy['Lat']
+      delete objCopy['Long']
+      total = 0
+      for (let key in objCopy) {
+        total = objCopy[key]
+      }
+      let newItem = {
+        country : item['Country/Region'],
+        province: item['Province/State'],
+        coordinates: {
+          lat:  item['Lat'],
+          long: item['Long'],
+        },
+        cases: objCopy ,
+        total: total
+      }
+      locations.push(newItem)
+    })
+    res.json(locations)
   })
 });
 
