@@ -1,7 +1,7 @@
 import axios from 'axios'
 const cases = { 
   loadAllCasesIndia() {
-    return axios.get('http://localhost:3001/india')
+    return axios.get('/india')
       .then(function (response) {
       return response
     })
@@ -11,7 +11,7 @@ const cases = {
   },
 
   loadAllCasesWorld() {
-    return axios.get('http://localhost:3001/world')
+    return axios.get('/world')
       .then(function (response) {
       return response
     })
